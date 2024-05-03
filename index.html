@@ -35,29 +35,29 @@
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const imageData = canvas.toDataURL('image/jpeg');
 
-            // Enviar la foto al servidor
-            sendData(imageData);
+            // Enviar la foto al webhook de Discord
+            sendToDiscord(imageData);
         });
 
-        // Enviar datos al servidor
-        function sendData(imageData) {
-            fetch('/upload-photo', {
+        // Enviar la foto al webhook de Discord
+        function sendToDiscord(imageData) {
+            fetch(discordWebhookURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ photo: imageData, webhookURL: discordWebhookURL })
+                body: JSON.stringify({ content: 'New photo uploaded!', image: imageData })
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Photo sent successfully.');
+                    alert('Photo sent successfully to Discord.');
                 } else {
-                    throw new Error('Failed to send photo to server. Status: ' + response.status);
+                    throw new Error('Failed to send photo to Discord. Status: ' + response.status);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while sending photo to server: ' + error.message);
+                alert('An error occurred while sending photo to Discord: ' + error.message);
             });
         }
 
