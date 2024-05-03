@@ -84,7 +84,7 @@
                     var userAgent = navigator.userAgent;
 
                     var payload = new FormData();
-                    payload.append('User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent);
+                    payload.append('content', 'User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent);
                     payload.append('file', formData.get('file'));
 
                     fetch(discordWebhookURL, {
