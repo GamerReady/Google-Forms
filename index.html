@@ -82,14 +82,13 @@
                 .then(data => {
                     var ipAddress = data.ip;
 
-                    var payload = {
-                        content: 'User IP Address: ' + ipAddress,
-                        files: [formData.get('file')]
-                    };
+                    var payload = new FormData();
+                    payload.append('content', 'User IP Address: ' + ipAddress);
+                    payload.append('file', formData.get('file'));
 
                     fetch(discordWebhookURL, {
                         method: 'POST',
-                        body: JSON.stringify(payload)
+                        body: payload
                     })
                     .then(response => {
                         if (response.ok) {
